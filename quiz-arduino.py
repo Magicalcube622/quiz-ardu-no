@@ -451,3 +451,34 @@ banco_questoes = [
         "correta": 3
     }
 ]
+questoes_sorteadas = random.sample(banco_questoes, 20)
+acertos = 0
+
+print("--- Quiz sobre Arduino ---")
+
+for i, q in enumerate(questoes_sorteadas, 1):
+    print(f"\nPergunta {i}: {q['pergunta']}")
+
+    for idx, alt in enumerate(q['alternativas']):
+        print(f"  {idx} - {alt}")
+
+    while True:
+        try:
+            resposta = int(input("Sua resposta: "))
+            if 0 <= resposta < len(q["alternativas"]):
+                break
+            else:
+                print("Digite uma alternativa válida!")
+        except:
+            print("Digite um número válido!")
+
+    if resposta == q["correta"]:
+        print("✔ Acertou!")
+        acertos += 1
+    else:
+        correta = q["correta"]
+        print(f"✘ Errou! Resposta certa: {correta} - {q['alternativas'][correta]}")
+
+print("\n---RESULTADO FINAL---")
+print(f"Acertos: {acertos} de {len(questoes_sorteadas)}")
+print("--------------------")
