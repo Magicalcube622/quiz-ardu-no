@@ -1,5 +1,6 @@
-import random
+import random # a biblioteca para sortear as perguntas
 
+# logo abaixo o banco com as 50 perguntas
 banco_questoes = [
     {
         "pergunta": "O que é o Arduino?",
@@ -451,13 +452,14 @@ banco_questoes = [
         "correta": 3
     }
 ]
+# mostra o menu do jogo
 def mostrar_menu():
     print("\n===== MENU PRINCIPAL =====")
     print("1 - Responder Quiz")
     print("2 - Exibir Regras")
     print("3 - Encerrar Programa")
 
-
+# mostra as regras do jogo
 def mostrar_regras():
     print("\n===== REGRAS DO JOGO =====")
     print("→ O quiz contém 20 perguntas sorteadas aleatoriamente.")
@@ -466,10 +468,11 @@ def mostrar_regras():
     print("→ Nota máxima: 10 pontos.")
     print("→ Digite apenas A, B, C, D ou E para responder.\n")
 
+# sortea 20 questoes das 50
 def sortear_questoes():
     return random.sample(banco_questoes, 20)
 
-
+# exibe uma questao
 def exibir_questao(numero, questao):
     print(f"\n{numero}. {questao['pergunta']}")
 
@@ -485,7 +488,7 @@ def exibir_questao(numero, questao):
 
     return indice_correto
 
-
+# verifica a resposta
 def verificar_resposta(indice_correto):
     letras = ["A", "B", "C", "D", "E"]
     resposta = input("Sua resposta: ").strip().upper()
@@ -495,7 +498,7 @@ def verificar_resposta(indice_correto):
 
     return letras.index(resposta) == indice_correto
 
-
+# mostra o resultado final
 def exibir_resultado(pontos):
     print("\n===== RESULTADO FINAL =====")
     print(f"Pontuação: {pontos:.1f} / 10.0")
@@ -509,7 +512,7 @@ def exibir_resultado(pontos):
     else:
         print("Estude mais e tente novamente!")
 
-
+# a funcao principal do quiz
 def responder_quiz():
     questoes = sortear_questoes()
     pontos = 0
@@ -526,6 +529,7 @@ def responder_quiz():
 
     exibir_resultado(pontos)
 
+# O loop principal do código
 def main():
     while True:
         mostrar_menu()
