@@ -451,34 +451,94 @@ banco_questoes = [
         "correta": 3
     }
 ]
-questoes_sorteadas = random.sample(banco_questoes, 20)
-acertos = 0
+def mostrar_menu():
+    print("\n===== MENU PRINCIPAL =====")
+    print("1 - Responder Quiz")
+    print("2 - Exibir Regras")
+    print("3 - Encerrar Programa")
 
-print("--- Quiz sobre Arduino ---")
 
-for i, q in enumerate(questoes_sorteadas, 1):
-    print(f"\nPergunta {i}: {q['pergunta']}")
+def mostrar_regras():
+    print("\n===== REGRAS DO JOGO =====")
+    print("→ O quiz contém 20 perguntas sorteadas aleatoriamente.")
+    print("→ Cada questão vale 0,5 pontos.")
+    print("→ As alternativas são embaralhadas a cada execução.")
+    print("→ Nota máxima: 10 pontos.")
+    print("→ Digite apenas A, B, C, D ou E para responder.\n")
 
-    for idx, alt in enumerate(q['alternativas']):
-        print(f"  {idx} - {alt}")
+def sortear_questoes():
+    return random.sample(banco_questoes, 20)
 
-    while True:
-        try:
-            resposta = int(input("Sua resposta: "))
-            if 0 <= resposta < len(q["alternativas"]):
-                break
-            else:
-                print("Digite uma alternativa válida!")
-        except:
-            print("Digite um número válido!")
 
-    if resposta == q["correta"]:
-        print("✔ Acertou!")
-        acertos += 1
+def exibir_questao(numero, questao):
+    print(f"\n{numero}. {questao['pergunta']}")
+
+    alternativas = questao["alternativas"][:]  
+    random.shuffle(alternativas)  
+
+    indice_correto = alternativas.index(questao["alternativas"][questao["correta"]])
+
+    letras = ["A", "B", "C", "D", "E"]
+
+    for i, alt in enumerate(alternativas):
+        print(f"   {letras[i]}) {alt}")
+
+    return indice_correto
+
+
+def verificar_resposta(indice_correto):
+    letras = ["A", "B", "C", "D", "E"]
+    resposta = input("Sua resposta: ").strip().upper()
+
+    while resposta not in letras:
+        resposta = input("Digite apenas A, B, C, D ou E: ").strip().upper()
+
+    return letras.index(resposta) == indice_correto
+
+
+def exibir_resultado(pontos):
+    print("\n===== RESULTADO FINAL =====")
+    print(f"Pontuação: {pontos:.1f} / 10.0")
+    
+    if pontos == 10:
+        print("Excelente! Você acertou tudo!")
+    elif pontos >= 7:
+        print("Muito bom! Você foi bem.")
+    elif pontos >= 5:
+        print("Você acertou mais da metade. Pode melhorar.")
     else:
-        correta = q["correta"]
-        print(f"✘ Errou! Resposta certa: {correta} - {q['alternativas'][correta]}")
+        print("Estude mais e tente novamente!")
 
-print("\n---RESULTADO FINAL---")
-print(f"Acertos: {acertos} de {len(questoes_sorteadas)}")
-print("--------------------")
+
+def responder_quiz():
+    questoes = sortear_questoes()
+    pontos = 0
+
+    for i, questao in enumerate(questoes, start=1):
+        indice_correto = exibir_questao(i, questao)
+        acertou = verificar_resposta(indice_correto)
+
+        if acertou:
+            pontos += 0.5
+            print("✔ Resposta correta!")
+        else:
+            print("✘ Resposta incorreta.")
+
+    exibir_resultado(pontos)
+
+def main():
+    while True:
+        mostrar_menu()
+        opcao = input("Escolha uma opção: ")
+
+        if opcao == "1":
+            responder_quiz()
+        elif opcao == "2":
+            mostrar_regras()
+        elif opcao == "3":
+            print("Encerrando programa...")
+            break
+        else:
+            print("Opção inválida.")
+
+main()
